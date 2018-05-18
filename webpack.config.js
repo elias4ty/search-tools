@@ -29,6 +29,10 @@ module.exports = (options = {}) => ({
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader']
       },
+        {
+          test : /\.scss$/,
+          use : ['style','css','sass']
+        },
       {
         test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
         use: [{
@@ -68,7 +72,8 @@ module.exports = (options = {}) => ({
     },
     historyApiFallback: {
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
-    }
+    },
+    open : true
   },
   devtool: options.dev ? '#eval-source-map' : '#source-map'
 })

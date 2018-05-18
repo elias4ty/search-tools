@@ -2,10 +2,16 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
+import './assets/css/main.css'
+import router from './router'
+import VueResource from 'vue-resource'
 
 Vue.use(ElementUI)
+Vue.use(VueResource)
 
 new Vue({
   el: '#app',
-  render: h => h(App)
+  render: h => h(App),
+    router
+
 })
