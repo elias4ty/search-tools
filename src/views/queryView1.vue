@@ -18,10 +18,7 @@
                 :date="header.date"
                 @queryData="queryData">
         </footer-view>
-        <blank-view
-                v-if="containLoading.switch"
-                :ins="containLoading.instance">
-        </blank-view>
+        <blank-view :_img="containLoading.switch"></blank-view>
     </el-main>
 </template>
 
@@ -50,34 +47,48 @@
                 tableLoading : {
                     instance : false,
                     switch : true
-                }
+                },
+                querySoruce : 'week'
             }
         },
         components : {queryHeaderView,queryTableView,footerView,blankView},
         methods : {
             queryData(query,date,page,type){
 
-                if(type && type == 'pageChange')
+                let u = null;
+
+                if(type && type == 'pageChange'){
+                    // 局部 loading
                     this.tableLoading.instance = true
+                    this.querySoruce == 'week' ? u = sqls.queryWeek(query,date,page) : u = sqls.queryToday(query,date,page)
+                }else {
+                    // 清除表格和分页器
+                    this.tableData = [];
+                    this.pageData = 0;
+                    if(type == 'week'){
+                        this.querySoruce = 'week'
+                        u = sqls.queryWeek(query,date,page);
+                    }else{
+                        this.querySoruce = 'single'
+                        u = sqls.queryToday(query,date,page);
+                    }
+
+                }
 
                 this.header.query = query;
                 this.header.date = date;
-                let u = sqls.queryWeek(query,date,page);
+
 
                 this.$http.jsonp(u).then(res => {
                     console.log(res.data)
-                    if(!type)
-                        this.tableData = this.buildTable(res.data)
                     this.containLoading.switch = false;
                     this.containLoading.instance.visible = false;
 
-                    if(type && type == 'pageChange'){
-                        setTimeout(() => {
-                            this.tableData = this.buildTable(res.data)
-                            this.tableLoading.instance = false
-                        },200)
-                    }
-
+                    // 局部 loading 的时候数据更新可能快过 loading 显示，所以要延时加载
+                    setTimeout(() => {
+                        this.tableData = this.buildTable(res.data)
+                        this.tableLoading.instance = false
+                    },200)
                 },err => {
                     console.log(err)
                 })
@@ -86,10 +97,10 @@
                 let realData = {
                     title : [],
                     body : []
-                };
-                realData.title = ['query',...Object.keys(data.count),'total','其他'];
+                },sortArr = Array.sort(Object.keys(data.count));
+                realData.title = [...sortArr,'total'];
 
-                let firstLine = {'query':'总体','其他':''},sum = 0;
+                let firstLine = {'query':'总体'},sum = 0;
 
                 for(let k in data.count){
                     sum += Number(data.count[k])
@@ -108,7 +119,6 @@
                         tmp[k] = doc.web[k].pv
                     }
                     tmp.total = doc.count
-                    tmp['其他'] = '历史PV SA'
                     realData.body.push(tmp)
                 }
 

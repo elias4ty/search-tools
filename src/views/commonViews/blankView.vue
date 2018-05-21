@@ -1,8 +1,14 @@
 <template>
     <div class="blank">
-       <img src="../../assets/images/adidas.jpg" alt="adidas">
+       <img v-if="_img" src="../../assets/images/adidas.jpg" alt="adidas"/>
     </div>
 </template>
+
+<script>
+    export default {
+        props : ['_img']
+    }
+</script>
 
 <style>
     .blank{
