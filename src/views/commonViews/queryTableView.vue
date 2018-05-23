@@ -7,9 +7,8 @@
                     element-loading-background="#FFF"
                     :data="tableData.body"
                     stripe
-                    max-height="400"
+                    max-height="450"
                     size = "medium"
-                    highlight-current-row = "true"
                     style="width: 100%">
 
                 <el-table-column
@@ -46,10 +45,13 @@
 <style>
     .t-out{
         color: #409EFF;
+        transition: font-size .2s,color .6s;
     }
 
     .t-out:hover{
         cursor: pointer;
+        font-size: 16px;
+        color: mediumpurple;
     }
 </style>
 
@@ -66,7 +68,6 @@
         },
         methods : {
             goClick(q){
-                console.log(q)
                 window.open(`http://www.sogoucn.com/wap.html?dbg=off&query=${q}`)
             }
         }

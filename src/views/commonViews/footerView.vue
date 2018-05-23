@@ -5,7 +5,6 @@
                 @prev-click="pageChange"
                 @next-click="pageChange"
                 :page-size="30"
-                :pager-count="10"
                 background
                 layout="prev, pager, next, total"
                 :total="pageData">
@@ -21,7 +20,7 @@
                 required : true
             },
             query : String,
-            date : Array
+            date : null
         },
         methods : {
             pageChange(page){

@@ -93,11 +93,15 @@ export default {
 
 .t-input .el-card{
   border: hidden;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
-.t-input .el-select,.t-input .el-date-editor{
+.t-input .el-select{
   width: 12%;
+}
+
+.t-input .el-date-editor{
+  width: 25%;
 }
 
 .t-table{
